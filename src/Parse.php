@@ -28,8 +28,8 @@ class Parse
     public function getSupportedFileExtensions(): array
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/supported_file_extensions'
+            method: 'GET',
+            path: 'v1/parsing/supported_file_extensions'
         );
     }
 
@@ -52,9 +52,9 @@ class Parse
         ]);
 
         return $this->client->request(
-            'POST',
-            'v1/parsing/upload',
-            $request
+            method: 'POST',
+            path:'v1/parsing/upload',
+            request: $request
         );
     }
 
@@ -68,8 +68,8 @@ class Parse
     public function getUsage(): array
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/usage'
+            method: 'GET',
+            path: 'v1/parsing/usage'
         );
     }
 
@@ -83,8 +83,8 @@ class Parse
     public function getJobById(string $jobId): array
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId
         );
     }
 
@@ -98,8 +98,9 @@ class Parse
     public function getParsingJobDetails(string $jobId): array
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/details'
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/details',
+            textMode: true
         );
     }
 
@@ -113,10 +114,9 @@ class Parse
     public function getJobTextResult(string $jobId): array
     {
         $response = $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/result/text',
-            [],
-            true
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/result/text',
+            textMode: false
         );
         try {
             return $response->toArray();
@@ -132,11 +132,12 @@ class Parse
      * @return array
      * @throws LlamaCloudException
      */
-    public function getJobRawTextResult(string $jobId): array
+    public function getJobRawTextResult(string $jobId): string
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/result/raw/text'
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/result/raw/text',
+            textMode: true
         );
     }
 
@@ -147,11 +148,12 @@ class Parse
      * @return array
      * @throws LlamaCloudException
      */
-    public function getJobRawMdResult(string $jobId): array
+    public function getJobRawMdResult(string $jobId): string
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/result/raw/markdown'
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/result/raw/markdown',
+            textMode: true
         );
     }
 
@@ -166,8 +168,8 @@ class Parse
     public function getJobJsonResult(string $jobId): array
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/result/json'
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/result/json'
         );
     }
 
@@ -178,11 +180,12 @@ class Parse
      * @return array
      * @throws LlamaCloudException
      */
-    public function getJobJsonRawResult(string $jobId): array
+    public function getJobJsonRawResult(string $jobId): string
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/result/raw/json'
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/result/raw/json',
+            textMode: false
         );
     }
 
@@ -195,8 +198,8 @@ class Parse
     public function getParsingHistoryResult(): array
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/history'
+            method: 'GET',
+            path: 'v1/parsing/history'
         );
     }
 
@@ -211,8 +214,8 @@ class Parse
     public function generatePresignedUrl(string $jobId, string $filename): array
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/read/' . $filename
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/read/' . $filename
         );
     }
 
@@ -227,10 +230,9 @@ class Parse
     public function getJobImageResult(string $jobId, string $name): array|ResponseInterface
     {
         return $this->client->request(
-            'GET',
-            'v1/parsing/job/' . $jobId . '/result/image/' . $name,
-            [],
-            true
+            method: 'GET',
+            path: 'v1/parsing/job/' . $jobId . '/result/image/' . $name,
+            textMode: true
         );
     }
 }

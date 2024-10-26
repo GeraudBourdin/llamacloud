@@ -51,25 +51,30 @@ class Client
         string $method,
         string $path,
         array $request = [],
-        bool $stream = false
-    ): array|ResponseInterface {
+        bool $textMode = false
+    ): string|array {
         try {
+            $params = [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->apiKey,
+                ]
+            ];
+
+            if(!empty($request)) {
+                $params = array_merge($params, ['body' => $request]);
+            }
+
             $response = $this->httpClient->request(
                 $method,
                 $this->url . '/' . $path,
-                [
-                    'body' => $request,
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $this->apiKey,
-                    ]
-                ]
+                $params
             );
         } catch (Throwable $e) {
             throw new LlamaCloudException($e->getMessage(), $e->getCode(), $e);
         }
 
         try {
-            return ($stream) ? $response : $response->toArray();
+            return ($textMode) ? $response->getContent() : $response->toArray();
         } catch (Throwable $e) {
             throw new LlamaCloudException($e->getMessage(), $e->getCode(), $e);
         }
