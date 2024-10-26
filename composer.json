@@ -14,6 +14,6 @@
     "tests": "phpunit"
   },
   "require": {
-    "symfony/http-client": "^7.1"
+    "symfony/http-client": "^6.4 || ^7.0"
   }
 }
